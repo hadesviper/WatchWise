@@ -21,9 +21,9 @@ class ViewModelMovieDetails @Inject constructor(
 ) :ViewModel() {
 
     /**
-     * [_state] this variable is private so it won't be updated anywhere else
+     * [_state] this state variable is private so it won't be updated anywhere else
      * and it holds the state of the movie whether it's loading or fetched data or error
-     * [state] is a public variable and it's equal to [_state] but it can't be updated
+     * [state] is a public state variable and it's equal to [_state] but it can't be updated
      * and it's used to update the UI
      */
     private val _state = mutableStateOf(StateMovie())
