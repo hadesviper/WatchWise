@@ -16,14 +16,20 @@ If you clicked any movie you will be navigated to the movie details screen that 
 
 You can access the watch later screen from the top right icon in the main screen, and you can exit the app by backpressing the main screen.
 
-App Links:-
+## Screenshotes:
 
-Debug:
-https://raw.githubusercontent.com/hadesviper/WatchWise/master/app/debug/WatchWise-debug.apk
+![Screenshot](https://user-images.githubusercontent.com/73364037/226068552-12567d1d-e730-400b-be63-07870375398f.jpg)
+![Screenshot](https://user-images.githubusercontent.com/73364037/226068557-46746737-6b53-4432-a1cc-d68059a42599.jpg)
+![Screenshot](https://user-images.githubusercontent.com/73364037/226068564-bb039a25-6ede-4a44-8cfa-3199879cd0ea.jpg)
+![Screenshot](https://user-images.githubusercontent.com/73364037/226068572-9993a7b5-0ebf-4328-9540-c982f1593b1e.jpg)
+![Screenshot](https://user-images.githubusercontent.com/73364037/226068581-949dabee-ccf4-466e-9f6f-9c0d799c177b.jpg)
+## App Links:-
 
-Release:
-https://raw.githubusercontent.com/hadesviper/WatchWise/master/app/release/WatchWise-release.apk
+[Debug](https://raw.githubusercontent.com/hadesviper/WatchWise/master/app/debug/WatchWise-debug.apk)
 
+[Release](https://raw.githubusercontent.com/hadesviper/WatchWise/master/app/release/WatchWise-release.apk)
+
+p.s: they have different package names.
 
 ## Author
 
