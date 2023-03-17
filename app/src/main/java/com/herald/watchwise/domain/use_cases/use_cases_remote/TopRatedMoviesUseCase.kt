@@ -16,7 +16,7 @@ import javax.inject.Inject
  * It has only the invoke operator function that takes an Int parameter page and returns a Flow of [Resources<[MoviesResult]>]
  * This function uses a flow builder to emit values asynchronously as they become available.
  * The first value it emits is a Resources.Loading object to indicate that the data is being fetched.
- * Then, it calls the [getTopRatedMovies] function to get the top-rated movies from the REST API.
+ * Then, it calls the getTopRatedMovies function to get the top-rated movies from the REST API.
  * If this call is successful, it emits a Resources.Success object that contains the top-rated movies data converted to a MoviesResult object.
  * If there is an HTTP or IO exception, it emits a Resources.Error object with a custom error message that is displayed to the user.
  */

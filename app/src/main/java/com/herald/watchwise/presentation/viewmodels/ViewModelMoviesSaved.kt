@@ -36,8 +36,7 @@ class ViewModelMoviesSaved @Inject constructor(
     }
 
     /**
-     * these 2 functions are launched on the viewModel coroutine scope
-     * and they suspend it until they finish their job
+     * these 2 suspend functions are launched on the viewModel coroutine scope
      */
     private fun removeMovie(id: Int) {
         viewModelScope.launch {

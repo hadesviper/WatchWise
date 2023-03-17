@@ -16,7 +16,7 @@ import javax.inject.Inject
  * It has only the invoke operator function that takes an Int parameter movie id and returns a Flow of [Resources<[Movie]>]
  * This function uses a flow builder to emit values asynchronously as they become available.
  * The first value it emits is a Resources.Loading object to indicate that the data is being fetched.
- * Then, it calls the [getMovie] function to get the desired movie from the REST API.
+ * Then, it calls the getMovie function to get the desired movie from the REST API.
  * If this call is successful, it emits a Resources.Success object that contains the movie data converted to a Movie object.
  * If there is an HTTP or IO exception, it emits a Resources.Error object with a custom error message that is displayed to the user.
  */

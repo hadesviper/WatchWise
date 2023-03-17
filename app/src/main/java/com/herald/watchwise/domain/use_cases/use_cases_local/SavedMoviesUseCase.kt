@@ -9,7 +9,7 @@ import javax.inject.Inject
  * This UseCase class used to store and retrieve movies from the local database,
  * it takes the [watchLaterRepo] as a parameter and it's handled by Dagger hilt.
  * I have nothing more documentation to add as these functions are documented
- * in [WatchLaterDao] interface
+ * in WatchLaterDao interface
  */
 class SavedMoviesUseCase @Inject constructor(
     private val watchLaterRepo: WatchLaterRepo
