@@ -2,11 +2,24 @@ package com.herald.watchwise.presentation.screens.screen_main
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,10 +37,12 @@ import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.herald.watchwise.R
+import com.herald.watchwise.domain.models.MoviesResult
 import com.herald.watchwise.presentation.Screens
 import com.herald.watchwise.presentation.screens.common_ui.TextWithIcon
 import com.herald.watchwise.presentation.ui.theme.ColorBackground
 import com.herald.watchwise.presentation.ui.theme.ColorPrimary
+import com.herald.watchwise.presentation.viewmodels.StateMovies
 import com.herald.watchwise.presentation.viewmodels.ViewModelPopularMovies
 import com.herald.watchwise.presentation.viewmodels.ViewModelTopRatedMovies
 import kotlinx.coroutines.launch
@@ -86,8 +101,13 @@ fun MyTopAppBar(
 @Composable
 fun MovieItems(
     navController: NavController,
-    viewModelPopular: ViewModelPopularMovies = hiltViewModel(),
-    viewModelTopRated: ViewModelTopRatedMovies = hiltViewModel()
+    stateTopRated: State<StateMovies>,
+    resultedListTopRated:List<MoviesResult.Result>,
+    loadMoreItemsTopRated:(LazyGridState)->Unit,
+    statePopular: State<StateMovies>,
+    resultedListPopular:List<MoviesResult.Result>,
+    loadMoreItemsPopular:(LazyGridState)->Unit
+
 ) {
 
     val scope = rememberCoroutineScope()
@@ -128,20 +148,25 @@ fun MovieItems(
     ) { page ->
         when (page) {
             0 -> MyLazyVerticalGrid(
-                viewModel = viewModelPopular,
-                navController = navController
-            )
+                state = statePopular,
+                navController = navController,
+                resultedList = resultedListPopular
+            ) { loadMoreItemsPopular(it) }
+
             1 -> MyLazyVerticalGrid(
-                viewModel = viewModelTopRated,
-                navController = navController
-            )
+                state = stateTopRated,
+                navController = navController,
+                resultedList = resultedListTopRated
+            ) { loadMoreItemsTopRated(it) }
         }
     }
 }
 
 @Composable
 fun MainScreen(
-    navController: NavController
+    navController: NavController,
+    viewModelPopular: ViewModelPopularMovies = hiltViewModel(),
+    viewModelTopRated: ViewModelTopRatedMovies = hiltViewModel()
 ) {
     val context = LocalContext.current
     BackHandler(true) {
@@ -152,17 +177,23 @@ fun MainScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = { MyTopAppBar(navController) },
     )
-    {
+    {padding->
         Column(
             modifier = Modifier
-                .padding(it)
+                .padding(padding)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            MovieItems(navController)
+            MovieItems(
+                navController = navController,
+                stateTopRated = viewModelTopRated.state,
+                resultedListTopRated = viewModelTopRated.resultedList,
+                loadMoreItemsTopRated = {viewModelTopRated.loadMoreItems(it)},
+                statePopular = viewModelPopular.state,
+                resultedListPopular = viewModelPopular.resultedList
+            ) { viewModelPopular.loadMoreItems(it) }
         }
-
     }
 }

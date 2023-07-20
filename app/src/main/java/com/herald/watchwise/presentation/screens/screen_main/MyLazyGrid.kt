@@ -6,19 +6,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.herald.watchwise.domain.models.MoviesResult
 import com.herald.watchwise.presentation.screens.common_ui.DialogError
 import com.herald.watchwise.presentation.screens.common_ui.MovieItem
-import com.herald.watchwise.presentation.viewmodels.CommonVM
+import com.herald.watchwise.presentation.viewmodels.StateMovies
 
 /**
  * the function that contains movies in a grid
@@ -29,12 +32,12 @@ import com.herald.watchwise.presentation.viewmodels.CommonVM
  */
 @Composable
 fun MyLazyVerticalGrid(
-    viewModel: CommonVM,
-    navController: NavController
+    state: State<StateMovies>,
+    resultedList:List<MoviesResult.Result>,
+    navController: NavController,
+    loadMoreItems:(LazyGridState)->Unit
 ) {
 
-
-    val state =  viewModel.state.value
     val scrollState = rememberLazyGridState()
 
     Column(
@@ -46,7 +49,7 @@ fun MyLazyVerticalGrid(
     )
     {
         AnimatedVisibility(
-            visible = viewModel.resultedList.isNotEmpty(),
+            visible = resultedList.isNotEmpty(),
             modifier = Modifier.weight(0.9f)
         ) {
             /**
@@ -59,7 +62,7 @@ fun MyLazyVerticalGrid(
                 columns = GridCells.Adaptive(144.dp),
                 state = scrollState,
             ) {
-                items(viewModel.resultedList) {
+                items(resultedList) {
                     MovieItem(
                         navController = navController,
                         name = it.title,
@@ -71,7 +74,7 @@ fun MyLazyVerticalGrid(
                 }
             }
         }
-        AnimatedVisibility(visible = state.loading) {
+        AnimatedVisibility(visible = state.value.loading) {
             CircularProgressIndicator()
         }
     }
@@ -81,13 +84,13 @@ fun MyLazyVerticalGrid(
      * only when the scroll state changes to true or false
      */
     LaunchedEffect(key1 = scrollState.isScrollInProgress) {
-        viewModel.loadMoreItems(scrollState)
+        loadMoreItems(scrollState)
     }
 
-    state.error.run {
+    state.value.error.run {
         if (isNotEmpty())
             DialogError(this) {
-                viewModel.loadMoreItems(scrollState)
+                loadMoreItems(scrollState)
             }
     }
 }

@@ -3,6 +3,7 @@ package com.herald.watchwise.presentation.viewmodels
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.herald.watchwise.common.Resources
 import com.herald.watchwise.domain.models.MoviesResult
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ViewModelPopularMovies @Inject constructor(
     private val popularMoviesUseCase: PopularMoviesUseCase
-) : CommonVM() {
+) : ViewModel() {
 
     /**
      * [_state] this state variable is private so it won't be updated any where else
@@ -34,9 +35,9 @@ class ViewModelPopularMovies @Inject constructor(
      */
 
     private val _state = mutableStateOf(StateMovies())
-    override val state: State<StateMovies> = _state
+    val state: State<StateMovies> = _state
     private val _resultedList = mutableListOf<MoviesResult.Result>()
-    override val resultedList: List<MoviesResult.Result> = _resultedList
+    val resultedList: List<MoviesResult.Result> = _resultedList
 
     /**
      * this function uses onEach flow operator as we won't
@@ -91,7 +92,7 @@ class ViewModelPopularMovies @Inject constructor(
      * It's purpose to load the first page when the LazyGrid
      * is empty and loads more when we reach the bottom
      */
-    override fun loadMoreItems(
+    fun loadMoreItems(
         scrollState: LazyGridState,
     ) {
         scrollState.run {
